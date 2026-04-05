@@ -1,0 +1,5 @@
+{
+  "name": "Hole in one",
+  "description": "A top-down mini-golf game where levels are shaped like characters. Features physics-based gameplay, drag-to-shoot controls, and an AI caddy powered by Gemini.",
+  "requestFramePermissions": []
+}

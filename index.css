@@ -1,0 +1,368 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Media query alias for short screens */
+@custom-variant short (@media (max-height: 920px));
+
+/* Media query alias for compact screens such as Macbook Air */
+@custom-variant compact (@media (max-height: 1024px));
+
+@theme {
+  --font-display: "Google Sans",
+  sans-serif;
+  --font-sans: "Google Sans",
+  sans-serif;
+}
+
+:root {
+  --header-mobile-height: 84px;
+  --header-height: 80px;
+}
+
+html,
+body {
+  font-size: 16px;
+}
+
+body {
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+  /* Makes for way smoother font weights */
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(root) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-gradient {
+  from {
+    --gradient-angle: 0deg;
+  }
+
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+.rainbow-border {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(#000, #000),
+    conic-gradient(from var(--gradient-angle),
+      #4285f4,
+      #bb55a1,
+      #ea4335,
+      #fbbc04,
+      #b9d84c,
+      #38a852,
+      #4285f4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.rainbow-border__sm {
+  backface-visibility: hidden;
+  background-origin: padding-box, border-box;
+  border: 1.2px solid transparent;
+  box-shadow: inset 0 0 0 0.35px rgba(0, 0, 0, 0.18);
+}
+
+.rainbow-border-2 {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(#000, #000),
+    conic-gradient(from var(--gradient-angle) at 50% 50.12%,
+    #4285F4 142.8739893436432deg,
+    #BB55A1 175.78184008598328deg,
+    #EA4335 194.22826051712036deg,
+    #FBBC04 246.98917865753174deg,
+    #B9D84C 268.67698431015015deg,
+    #38A852 305.1065754890442deg,
+    #38A852 330.3632426261902deg,
+    #4285F4 353.76710414886475deg);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.rainbow-border-2__sm {
+  backface-visibility: hidden;
+  background-origin: padding-box, border-box;
+  border: 1.2px solid transparent;
+  box-shadow: inset 0 0 0 0.35px rgba(0, 0, 0, 0.18);
+}
+
+.animate-rotate-gradient {
+  animation: rotate-gradient 7s linear infinite;
+}
+
+/* Fallback for browsers without View Transition API */
+@supports not (view-transition-name: none) {
+  body {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  @view-transition {
+    navigation: none;
+  }
+
+  body {
+    animation: none !important;
+  }
+}
+
+@theme {
+  --animate-fade-in: fadeIn 1s ease-in-out;
+  --animate-slide-in-up: slideInUp 0.5s ease-out;
+  --animate-gradient: gradientShift 5s linear infinite;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 200% 0%;
+    }
+
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+
+  @keyframes reversePing {
+    0% {
+      transform: scale(2);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  --animate-reverse-ping: reversePing 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@layer base {
+
+  .enabled-pointer:not([disabled]),
+  button:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  *:focus {
+    outline: none;
+    transition: none;
+  }
+
+  *:focus-visible {
+    --tw-ring-color: #4275f4;
+    --tw-ring-offset-width: 2px;
+    transition: none;
+    outline: var(--tw-ring-offset-width) solid var(--tw-ring-color);
+    outline-offset: var(--tw-ring-offset-width);
+    border-radius: 2px;
+  }
+
+  .focus-overflow:focus-visible {
+    outline-offset: calc(-1 * var(--tw-ring-offset-width));
+  }
+}
+
+/* Universal hover state */
+a,
+button {
+  transition: 0.4s opacity ease-in;
+}
+
+/* Since sibling links should lower opacity we need to set a hover "context" */
+@media (hover: hover) {
+
+  .hover-context:has(a:hover) a:not(:hover),
+  .hover-context:has(a:hover) button:not(:hover),
+  .hover-context:has(button:hover) button:not(:hover),
+  .hover-context:has(button:hover) a:not(:hover) {
+    opacity: 0.35;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  .button-white {
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  .button-white:hover {
+    opacity: 0.8;
+  }
+}
+
+/* Support for text Trim (for browsers that supports it) */
+.text-trim-both {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+.text-trim-start {
+  text-box-trim: trim-start;
+  text-box-edge: cap alphabetic;
+}
+
+.text-trim-end {
+  text-box-trim: trim-end;
+  text-box-edge: cap alphabetic;
+}
+
+.h-full-sans-nav {
+  @apply h-[calc(100dvh-var(--header-mobile-height))] lg:h-[calc(100dvh-var(--header-height))];
+}
+
+.min-h-full-sans-nav {
+  @apply min-h-[calc(100dvh-var(--header-mobile-height))] lg:min-h-[calc(100dvh-var(--header-height))];
+}
+
+.headline-big {
+  @apply text-[80px] lg:text-[140px] xl:text-[260px] leading-[0.9] font-medium tracking-[-3.84px] xl:tracking-[-10.4px];
+}
+
+.headline-medium {
+  @apply text-[40px] lg:text-[96px] leading-[1.1] tracking-[-1.92px] lg:tracking-[-3.84px] font-medium;
+}
+
+.content-wrapper {
+  @apply mx-auto px-[20px] md:px-[60px] max-w-[1440px];
+}
+
+header:has(+ #landing-page) {
+  @apply bg-black/50 fixed w-full;
+}
+
+.headline-play {
+  font-size: 260px;
+  letter-spacing: -10.4px;
+  line-height: 0.9;
+}
+
+@media screen and (max-width: 1440px) {
+  .headline-play {
+    font-size: clamp(96px, 10vw, 260px);
+    letter-spacing: -0.4vw;
+    line-height: 0.9;
+  }
+}
+
+.byline-play {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 1440px) {
+  .byline-play {
+    font-size: clamp(16px, 2.5vw, 24px);
+  }
+}
+
+@layer utilities {
+  .animate-label-out .text-trim-both {
+    animation: labelFadeOut 400ms ease forwards;
+    animation-delay: 3s;
+    display: inline-block;
+    margin-left: 10px;
+    max-width: 200px;
+    overflow: hidden;
+    opacity: 1;
+    transform: translateY(0);
+    transition: max-width 400ms ease-in-out;
+    white-space: nowrap;
+  }
+
+  @keyframes labelFadeOut {
+    to {
+      margin-left: 0;
+      max-width: 0;
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 48px;
+  left: 48px;
+  width: auto;
+}
